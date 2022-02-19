@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,7 +17,7 @@ public class Ping {
 
     private String HOST_PONG = "https://pacific-oasis-42993.herokuapp.com";
  
-    @RequestMapping("/ping")
+    @RequestMapping(value = "/ping", method = RequestMethod.POST)
     public String ping(){
         String retorno = "PING </br>" + new Date().toString();
         return retorno;
@@ -39,8 +40,8 @@ public class Ping {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
         HttpEntity<String> entity = new HttpEntity<>(retorno, headers);
-        restTemplate.postForObject(pongPath, entity, String.class); 
-        retorno = entity.getBody();
+        retorno = restTemplate.postForObject(pongPath, entity, String.class); 
+
 
         return retorno;
     }
