@@ -2,6 +2,7 @@ package com.example;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +17,12 @@ import org.springframework.web.client.RestTemplate;
 public class Ping {
 
     private String HOST_PONG = "https://pacific-oasis-42993.herokuapp.com";
- 
+    private static AtomicInteger retornoPing = new AtomicInteger(0);
+    private static AtomicInteger envioPing = new AtomicInteger(0);
+
     @RequestMapping(value = "/ping", method = RequestMethod.POST)
     public String ping(){
-        String retorno = "PING </br>" + new Date().toString();
+        String retorno = "PING </br>" + new Date().toString() + "</br> Retorno Ping remoto: " + retornoPing.getAndIncrement();
         return retorno;
     }
 
@@ -41,7 +44,8 @@ public class Ping {
         headers.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
         HttpEntity<String> entity = new HttpEntity<>(retorno, headers);
         retorno = restTemplate.postForObject(pongPath, entity, String.class); 
-
+        retorno = retorno + "</br> Envio Ping: " + envioPing.getAndIncrement() + 
+                            "</br> Retorno Ping: " + retornoPing.get();
 
         return retorno;
     }
