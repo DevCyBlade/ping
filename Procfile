@@ -1,0 +1,1 @@
+web: java -jar target/ping-1.0.jar
