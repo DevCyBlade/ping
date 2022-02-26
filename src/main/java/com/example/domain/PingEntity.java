@@ -16,6 +16,16 @@ public class PingEntity {
     //@Indexed(unique = true)
     private String name;
     private Date timeEvent;
+    private Integer contadorRetorno;
+    
+
+    public Integer getContadorRetorno() {
+        return contadorRetorno;
+    }
+
+    public void setContadorRetorno(Integer contadorRetorno) {
+        this.contadorRetorno = contadorRetorno;
+    }
 
     public ObjectId getId() {
         return id;

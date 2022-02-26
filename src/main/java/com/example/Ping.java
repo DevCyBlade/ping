@@ -29,7 +29,9 @@ public class Ping {
 
     @RequestMapping(value = "/ping", method = RequestMethod.POST)
     public String ping(){ 
-        PingEntity pingEntity = new PingEntity("PING </br>" + new Date().toString() + "</br> Retorno Ping remoto: " + retornoPing.getAndIncrement());
+        Integer valorAtualRetornoPing = retornoPing.incrementAndGet();
+        PingEntity pingEntity = new PingEntity("PING </br>" + new Date().toString() + "</br> Retorno Ping remoto: " + valorAtualRetornoPing);
+        pingEntity.setContadorRetorno(valorAtualRetornoPing);
         pingEntity = pingRepository.insert(pingEntity); 
         String retorno = pingEntity.getName();
         return retorno;
