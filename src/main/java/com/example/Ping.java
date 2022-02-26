@@ -4,6 +4,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.example.domain.PingEntity;
+import com.example.repository.PingRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,13 +20,18 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class Ping {
 
+    @Autowired
+    private PingRepository pingRepository;
+
     private String HOST_PONG = "https://pacific-oasis-42993.herokuapp.com";
     private static AtomicInteger retornoPing = new AtomicInteger(0);
     private static AtomicInteger envioPing = new AtomicInteger(0);
 
     @RequestMapping(value = "/ping", method = RequestMethod.POST)
-    public String ping(){
-        String retorno = "PING </br>" + new Date().toString() + "</br> Retorno Ping remoto: " + retornoPing.getAndIncrement();
+    public String ping(){ 
+        PingEntity pingEntity = new PingEntity("PING </br>" + new Date().toString() + "</br> Retorno Ping remoto: " + retornoPing.getAndIncrement());
+        pingEntity = pingRepository.insert(pingEntity); 
+        String retorno = pingEntity.getName();
         return retorno;
     }
 
